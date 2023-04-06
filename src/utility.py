@@ -3,25 +3,6 @@ import SimRNG
 import SimClasses
 
 
-# def get_rates():
-#     df = pd.read_csv('predicted_data.csv')
-#     df.index = df.start_hour
-#     df = df.drop('start_hour', axis=1)
-#
-#     max_renting = []
-#     rentings = []
-#     max_return = []
-#     returns = []
-#
-#     for i in range(0, 5):
-#         max_renting.append(df['hourly_count'].max())
-#         rentings.append(df.hourly_count.tolist())
-#         # XXX degisilecek??????
-#         max_return.append(df['hourly_count'].max())
-#         returns.append(df.hourly_count.tolist())
-#
-#     return max_renting, rentings, max_return, returns
-
 def get_rates():
     max_renting = []
     rentings = []
@@ -57,18 +38,8 @@ def get_trial_solution():
     return trial_solution
 
 
-# Prevent index out of range
-# def pw_arr_rate(station_id, possible_arrival, renting_rates):
-#     hour = int(possible_arrival / 20)
-#     if hour <= 8:
-#         return renting_rates[station_id][hour]
-#     else:
-#         return renting_rates[station_id][-1]
-
-
 def nspp(station_id, max_renting_rates, renting_rates):
     possible_arrival = SimClasses.Clock + SimRNG.Expon(1 / (max_renting_rates[station_id] / 20), 1)
-    # while SimRNG.Uniform(0, 1, 1) >= pw_arr_rate(station_id, possible_arrival, renting_rates)/(max_renting_rates[station_id]):
     while SimRNG.Uniform(0, 1, 1) >= \
             renting_rates[station_id][int(possible_arrival / 20)] / (max_renting_rates[station_id]):
         possible_arrival = possible_arrival + SimRNG.Expon(1 / (max_renting_rates[station_id] / 20), 1)
